@@ -115,12 +115,6 @@ Open `http://localhost:5173`. In dev mode, the frontend automatically points to 
 | `MAILBOX_TTL_HOURS` | `24` | How long an inactive mailbox stays valid |
 | `MAILBOX_COOLDOWN_MINUTES` | `15` | Delay before an expired mailbox name can be claimed again |
 
-### Frontend (`frontend/.env`)
-
-| Variable | Default | Description |
-|---|---|---|
-| `VITE_API_URL` | `""` | Backend API URL. Leave empty to use auto-detection (localhost:8080 in dev, current host in prod) |
-
 ---
 
 ## API Endpoints
@@ -134,35 +128,6 @@ All mailbox endpoints use the `X-Mailbox-Token` header for authentication.
 - `GET /api/mailbox/messages/:id` - Get full message (including HTML body)
 - `DELETE /api/mailbox/messages/:id` - Delete a single message
 - `GET /api/ws?token=...` - WebSocket connection for real-time incoming mail alerts
-
----
-
-## Deployment
-
-### Option 1: Cloudflare Pages + Go VPS / Container
-
-Build the frontend:
-```bash
-cd frontend
-npm run build
-npx wrangler pages deploy dist
-```
-Run the Go backend on your VPS or Docker container, setting `VITE_API_URL` to your backend domain.
-
-### Option 2: Single Binary (Go serves the frontend)
-
-Build the frontend first:
-```bash
-cd frontend && npm run build && cd ..
-```
-Then build and run the Go backend:
-```bash
-cd backend
-go build -o ../tmail .
-cd ..
-./tmail
-```
-If `frontend/dist` exists, the Go server automatically serves it as a single-page app on `http://localhost:8080`.
 
 ---
 
